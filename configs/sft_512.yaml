@@ -1,0 +1,12 @@
+_base_: base.yaml
+
+stage: sft
+
+dataset:
+  train_path: /root/VerMind/data/sft_mini_512.jsonl
+  max_length: 512
+
+training:
+  lr: 2e-5
+  batch_size: 16
+  epochs: 3

@@ -1,0 +1,11 @@
+model:
+  model_name: VerMind
+  vocab_size: 6400
+  hidden_size: 768
+  num_layers: 12
+  num_heads: 12
+
+training:
+  batch_size: 16
+  lr: 3e-4
+  epochs: 3
