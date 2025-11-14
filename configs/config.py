@@ -2,14 +2,17 @@ import os, sys, yaml
 from dataclasses import dataclass, field
 from typing import Optional, List, Tuple
 from omegaconf import OmegaConf, MISSING
+import torch
 
 # ==================== 子配置定义 ====================
 
 @dataclass
 class ModelConfig:
+    model_path: Optional[str] = None
     model_name: str = "VerMind-100M"
     vocab_size: int = 6400
     hidden_size: int = 768
+    num_hidden_layers: int = 16
     num_layers: int = 12
     num_heads: int = 12
     dropout: float = 0.1
@@ -22,17 +25,27 @@ class DatasetConfig:
     max_length: int = 2048
     num_workers: int = 4
     shuffle: bool = True
+    max_len: int = 512
 
 
 @dataclass
 class TrainingConfig:
+    seed: int = 42
     batch_size: int = 16
     epochs: int = 3
     lr: float = 3e-4
-    gradient_accumulation: int = 1
-    fp16: bool = True
-    output_dir: str = "outputs/"
-    save_steps: int = 500
+    gradient_accumulation_steps: int = 4
+    dtype: str = "bfloat16"
+    save_steps: int = 1000
+    logging_steps: int = 100
+    use_swanlab: bool = True
+    device: str = "cuda" if torch.cuda.is_available() else "cpu"
+    save_dir : str = "checkpoints/"
+    num_workers: int = 12 # DataLoader使用的线程数
+    grad_clip: float = 1.0
+    resume: int = -1  # 从指定step恢复训练，-1表示不恢复
+    resume_path: str = ""  # 恢复训练的checkpoint路径
+    
 
 
 # ==================== 主配置类 ====================

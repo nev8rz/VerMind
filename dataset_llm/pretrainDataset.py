@@ -46,7 +46,7 @@ class PretrainDataset(Dataset):
     def __len__(self):
         return len(self.samples)
 
-    def __getitem__(self, index):
+    def __getitem__(self, index,return_dict=False):
         text = str(self.samples[index])
 
         # ====== 编码 ======
@@ -66,11 +66,14 @@ class PretrainDataset(Dataset):
         Y = input_ids[1:]
         loss_mask = attention_mask[1:]
 
-        return {
-            "input_ids": X.to(torch.long),
-            "labels": Y.to(torch.long),
-            "loss_mask": loss_mask.to(torch.long),
-        }
+        if return_dict:
+            return {
+                "input_ids": X.to(torch.long),
+                "labels": Y.to(torch.long),
+                "loss_mask": loss_mask.to(torch.long),
+            }
+        else:
+            return X.to(torch.long), Y.to(torch.long), loss_mask.to(torch.long)
                    
 def main():
     from transformers import AutoTokenizer

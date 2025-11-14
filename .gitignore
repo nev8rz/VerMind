@@ -2,3 +2,9 @@
 __pycache__
 data
 .vscode
+
+
+*.log
+*.tmp
+
+Pretrain
